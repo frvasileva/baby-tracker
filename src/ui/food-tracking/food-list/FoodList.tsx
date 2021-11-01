@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { FOOD_ITEMS } from '../../../graphql/queries';
+import { Layout } from '../../layout/Layout';
 import FoodItem from '../food-item/FoodItem';
 import './FoodList.scss';
 
@@ -14,12 +15,14 @@ function FoodList() {
     console.log("items", items);
 
     return (
-        <div className="food-list-wrapper">
-            Food list:
-            {
-                items.map((item: any) => <FoodItem {...item} key={item.name} />)
-            }
-        </div>
+        <Layout>
+            <div className="food-list-wrapper">
+                Food list:
+                {
+                    items.map((item: any) => <FoodItem {...item} key={item.name} />)
+                }
+            </div>
+        </Layout>
     );
 }
 

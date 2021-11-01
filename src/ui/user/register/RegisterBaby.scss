@@ -1,0 +1,16 @@
+.sex-wrapper {
+  cursor: pointer;
+  text-align: center;
+  padding: 30px;
+  border-radius: 20px;
+
+  & .fas {
+    font-size: 30px;
+  }
+  &.male {
+    background-color: #bfd6ef;
+  }
+  &.female {
+    background-color: pink;
+  }
+}

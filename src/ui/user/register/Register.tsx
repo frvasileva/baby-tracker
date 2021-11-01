@@ -3,6 +3,7 @@ import { useRealmApp } from "../../../RealmApp";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
+import { Layout } from "../../layout/Layout";
 
 
 export const Register = () => {
@@ -21,7 +22,7 @@ export const Register = () => {
     email: "",
   });
 
- 
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
@@ -40,7 +41,7 @@ export const Register = () => {
   };
 
   return (
-    <div>
+    <Layout>
       <div className="container">
         <div className="row">
           <div className="col-md-7">
@@ -97,7 +98,7 @@ export const Register = () => {
                   type="submit"
                   className="btn btn-dark btn-lg btn-block main-action-btn"
                 >
-                  Register
+                  Регистрация
                 </button>
               </div>
             </form>
@@ -108,6 +109,6 @@ export const Register = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
