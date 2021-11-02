@@ -1,7 +1,9 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
-
+import { useHistory } from "react-router-dom";
+import { INSERT_CHILD_PROFILE } from "../../../graphql/queries";
 import { useRealmApp } from "../../../RealmApp";
 import { Layout } from "../../layout/Layout";
 import "./RegisterBaby.scss";
@@ -9,9 +11,13 @@ import "./RegisterBaby.scss";
 export const RegisterBaby = () => {
 
     const app = useRealmApp();
+    let history = useHistory();
+
     const [name, setName] = React.useState("");
     const [sex, setSex] = React.useState("");
-    const [birthDate, setBirthDate] = React.useState();
+    const [birthdate, setBirthDate] = React.useState();
+
+    const [insertChildProfile] = useMutation(INSERT_CHILD_PROFILE);
 
     const dtInputProps = {
         placeholder: 'Изберете дата',
@@ -23,9 +29,19 @@ export const RegisterBaby = () => {
         var profile = {
             name,
             sex,
-            birthDate,
-            createdOn: new Date()
+            birthdate,
+            createdOn: new Date(),
+            parent: { link: app.currentUser.id }
         }
+
+        insertChildProfile({
+            variables: {
+                input: profile,
+            },
+        }).then(() => {
+            history.push("/");
+        });
+
         console.log("profile", profile);
     };
 
@@ -41,6 +57,10 @@ export const RegisterBaby = () => {
         <div className="row">
             <div className="col-8">
                 <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="name">Дата на раждане:</label>
+                        <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" onChange={changeDate} />
+                    </div>
                     <div className="form-group">
                         <label htmlFor="name">Име:</label>
                         <input
@@ -75,10 +95,7 @@ export const RegisterBaby = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="name">Дата на раждане:</label>
-                            <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY"  onChange={changeDate} />
-                        </div>
+
                     </div>
 
                     <div className="form-group">

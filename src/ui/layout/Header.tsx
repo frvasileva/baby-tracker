@@ -120,6 +120,12 @@ export const Header = (props: any) => {
                                                 >
                                                     Добави храна
                                                 </Link>
+                                                <Link
+                                                    to={"/create-baby-profile"}
+                                                    className="dropdown-item profile-link"
+                                                >
+                                                    Добави дете
+                                                </Link>
                                                 <hr />
                                                 <button
                                                     onClick={logout}

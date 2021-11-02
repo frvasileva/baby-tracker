@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { Layout } from "../../layout/Layout";
-
+import { INSERT_USER_CUSTOM_INFO } from "../../../graphql/queries";
 
 export const Register = () => {
   const app = useRealmApp();
@@ -22,6 +22,8 @@ export const Register = () => {
     email: "",
   });
 
+  const [insertUserCustomInfo] = useMutation(INSERT_USER_CUSTOM_INFO);
+
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -29,13 +31,18 @@ export const Register = () => {
     await app.emailPasswordAuth.registerUser(email, password);
     await app.logIn(email, password).then((res: any) => {
       var newFields = {
-        ...fields,
-        _id: app.users[0].id,
         name: name,
         email: email,
-        userId: app.users[0].id,
-        roles: { link: "601c179366184a2118b5dea7" }, //Hardcoded - TODO - put in config
+        userId: app.users[0].id
       };
+
+      insertUserCustomInfo({
+        variables: {
+          input: newFields,
+        },
+      }).then(() => {
+        history.push("create-baby-profile");
+      });
 
     });
   };
