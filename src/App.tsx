@@ -12,7 +12,6 @@ function App() {
     <RealmAppProvider appId={APP_ID}>
       <BrowserRouter>
         <RealmApolloProvider>
-          <Header/>
           <Routing />
         </RealmApolloProvider>
       </BrowserRouter>

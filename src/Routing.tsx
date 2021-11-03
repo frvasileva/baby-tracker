@@ -17,6 +17,7 @@ export const Routing = () => {
             <Route exact path="/create-baby-profile" component={RegisterBaby} />
             <Route exact path="/user/profile" component={UserProfile} />
             <Route exact path="/child/profile/:id" component={ChildProfile} />
+            <Route exact path="/food-list" component={FoodList} />
         </Switch>
     );
 };

@@ -70,6 +70,8 @@ export const FOOD_ITEMS = gql`
   query {
         foodItems {
         name
+        foodGroup
+        positionOrder
     }
   }
 `;
