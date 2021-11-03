@@ -69,6 +69,7 @@ export const GET_USER_PROFILE_INFO = gql`
 export const FOOD_ITEMS = gql`
   query {
         foodItems {
+        _id
         name
         foodGroup
         positionOrder
@@ -76,3 +77,13 @@ export const FOOD_ITEMS = gql`
   }
 `;
 
+export const INSERT_FOOD_ITEM_FOR_CHILD = gql`
+   mutation ($input: ChildFoodItemInsertInput!) {
+    insertOneChildFoodItem(data: $input) {
+      _id
+      childId
+      createdOn
+      foodId
+    }
+  }
+`;
