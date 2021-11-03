@@ -59,7 +59,7 @@ export const RegisterBaby = () => {
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Дата на раждане:</label>
-                        <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" onChange={changeDate} />
+                        <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" onChange={changeDate} closeOnSelect={true} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="name">Име:</label>
@@ -95,7 +95,6 @@ export const RegisterBaby = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div className="form-group">
