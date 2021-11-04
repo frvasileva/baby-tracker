@@ -26,14 +26,14 @@ function FoodItem(props: any) {
     // const openCalendar = (event: any) => {
     //     setIsOpen(true);
     // }
+
+    console.log(props);
     const foodItem = props;
     const [insertFoodItem] = useMutation(INSERT_FOOD_ITEM_FOR_CHILD);
     const [deleteFoodItem] = useMutation(DELETE_FOOD_ITEM_FOR_CHILD);
 
-    const onChange = (event: any) => {
-        console.log("event", event);
-        console.log("checked", event.target.checked);
 
+    const onChange = (event: any) => {
         if (event.target.checked) {
             var item = {
                 createdOn: new Date(),
@@ -48,8 +48,6 @@ function FoodItem(props: any) {
             });
         }
         else {
-            console.log("delete");
-
             deleteFoodItem({
                 variables: {
                     foodId: event.target.name,
@@ -65,11 +63,11 @@ function FoodItem(props: any) {
                 <div className="form-check">
                     <Form.Check
                         type="checkbox"
-                        id={foodItem.name}
+                        id={foodItem.name + props.tabName}
                         name={foodItem._id}
                         label={foodItem.name}
                         onChange={onChange}
-                        checked={foodItem.isSelected}
+                        defaultChecked={foodItem.isSelected}
                     />
                 </div>
             </div>

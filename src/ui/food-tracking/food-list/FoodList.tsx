@@ -37,11 +37,10 @@ function FoodList() {
                 <Tabs defaultActiveKey="all" id="food-list-tabs" className="mb-3">
                     <Tab eventKey="all" title="Всички">
                         {
-                            items.map((item: any) => <FoodItem {...item} key={item.name} />)
+                            items.map((item: any) => <FoodItem {...item} key={item.name} tabName="all"/>)
                         }
                     </Tab>
                     <Tab eventKey="vegetables" title="Зеленчуци">
-                        <p>Зеленчуци:</p>
                         {
                             vegetables.map((item: any) => <FoodItem {...item} key={item.name} />)
                         }
