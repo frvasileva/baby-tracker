@@ -3,9 +3,7 @@ import gql from "graphql-tag";
 
 const fragments = {
   userInfo_detailed: gql`
-    fragment UserInfo_Detailed on User {
-     
-
+    fragment UserInfo_Detailed on User { 
       _id
       userId
       email
@@ -76,14 +74,43 @@ export const FOOD_ITEMS = gql`
     }
   }
 `;
+export const FOOD_ITEMS_PER_CHILD = gql`
+  query($childId: ObjectId) {
+    childFoodItems(query:{ child: {_id:$childId}}){
+    _id
+    food {
+      _id
+      name
+      }
+    }
+  }  
+`;
 
 export const INSERT_FOOD_ITEM_FOR_CHILD = gql`
    mutation ($input: ChildFoodItemInsertInput!) {
-    insertOneChildFoodItem(data: $input) {
+      insertOneChildFoodItem(data: $input) {
+        _id
+      child {
+        _id
+        name
+      }
+      food {
+        _id
+        name
+      }
+  }
+}
+`;
+
+export const DELETE_FOOD_ITEM_FOR_CHILD = gql`
+   mutation ($childId: ObjectId, $foodId: ObjectId) {
+    deleteOneChildFoodItem(
+    query: {child: {_id: $childId}, food: {_id: $foodId}}) 
+    {
+    food {
       _id
-      childId
-      createdOn
-      foodId
+      name
     }
   }
+}
 `;

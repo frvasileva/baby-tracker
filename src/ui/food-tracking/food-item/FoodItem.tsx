@@ -1,9 +1,9 @@
 import React from 'react';
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import "./FoodItem.scss";
 import Datetime from 'react-datetime';
 import { Form } from 'react-bootstrap';
-import { INSERT_FOOD_ITEM_FOR_CHILD } from '../../../graphql/queries';
+import { DELETE_FOOD_ITEM_FOR_CHILD, INSERT_FOOD_ITEM_FOR_CHILD } from '../../../graphql/queries';
 import { useRealmApp } from '../../../RealmApp';
 
 function FoodItem(props: any) {
@@ -26,8 +26,9 @@ function FoodItem(props: any) {
     // const openCalendar = (event: any) => {
     //     setIsOpen(true);
     // }
-
+    const foodItem = props;
     const [insertFoodItem] = useMutation(INSERT_FOOD_ITEM_FOR_CHILD);
+    const [deleteFoodItem] = useMutation(DELETE_FOOD_ITEM_FOR_CHILD);
 
     const onChange = (event: any) => {
         console.log("event", event);
@@ -36,13 +37,23 @@ function FoodItem(props: any) {
         if (event.target.checked) {
             var item = {
                 createdOn: new Date(),
-                foodId: event.target.name,
-                childId: app.currentUser.customData.children[0].$oid
+                food: { link: event.target.name },
+                child: { link: app.currentUser.customData.children[0].$oid } //TODO: get currently selected child
             };
 
             insertFoodItem({
                 variables: {
                     input: item,
+                },
+            });
+        }
+        else {
+            console.log("delete");
+
+            deleteFoodItem({
+                variables: {
+                    foodId: event.target.name,
+                    childId: app.currentUser.customData.children[0].$oid
                 },
             });
         }
@@ -54,10 +65,11 @@ function FoodItem(props: any) {
                 <div className="form-check">
                     <Form.Check
                         type="checkbox"
-                        id={props.name}
-                        name={props._id}
-                        label={props.name}
+                        id={foodItem.name}
+                        name={foodItem._id}
+                        label={foodItem.name}
                         onChange={onChange}
+                        checked={foodItem.isSelected}
                     />
                 </div>
             </div>
