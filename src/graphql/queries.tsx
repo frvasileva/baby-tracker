@@ -78,6 +78,7 @@ export const FOOD_ITEMS_PER_CHILD = gql`
   query($childId: ObjectId) {
     childFoodItems(query:{ child: {_id:$childId}}){
     _id
+    introductionDate
     food {
       _id
       name
@@ -90,14 +91,15 @@ export const INSERT_FOOD_ITEM_FOR_CHILD = gql`
    mutation ($input: ChildFoodItemInsertInput!) {
       insertOneChildFoodItem(data: $input) {
         _id
-      child {
-        _id
-        name
-      }
-      food {
-        _id
-        name
-      }
+        introductionDate
+        child {
+          _id
+          name
+        }
+        food {
+          _id
+          name
+        }
   }
 }
 `;
