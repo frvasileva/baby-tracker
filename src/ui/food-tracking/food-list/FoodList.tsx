@@ -4,7 +4,6 @@ import { FOOD_ITEMS, FOOD_ITEMS_PER_CHILD } from '../../../graphql/queries';
 import { Layout } from '../../layout/Layout';
 import FoodItem from '../food-item/FoodItem';
 import './FoodList.scss';
-import Datetime from 'react-datetime';
 import { useRealmApp } from '../../../RealmApp';
 
 function FoodList() {
@@ -22,8 +21,14 @@ function FoodList() {
 
 
     const fItemsPerChild = foodItemsPerChild.data.childFoodItems;
-    const items = foodItems.data.foodItems.map((item: any) => ({ ...item, isSelected: fItemsPerChild.some((itm: any) => itm.food._id === item._id) }))
+    const items = foodItems.data.foodItems.map((item: any) => (
+        {
+            ...item,
+            isSelected: fItemsPerChild.some((itm: any) => itm.food._id === item._id),
+            introductionDate: fItemsPerChild.find((itm: any) => itm.food._id === item._id)?.introductionDate
+        }))
 
+    console.log("items", items);
     var vegetables = items.filter((item: any) => item.foodGroup === "vegetables");
     var fruits = items.filter((item: any) => item.foodGroup === "fruits");
     var dairy = items.filter((item: any) => item.foodGroup === "dairy");
@@ -37,7 +42,7 @@ function FoodList() {
                 <Tabs defaultActiveKey="all" id="food-list-tabs" className="mb-3">
                     <Tab eventKey="all" title="Всички">
                         {
-                            items.map((item: any) => <FoodItem {...item} key={item.name} tabName="all"/>)
+                            items.map((item: any) => <FoodItem {...item} key={item.name} tabName="all" />)
                         }
                     </Tab>
                     <Tab eventKey="vegetables" title="Зеленчуци">

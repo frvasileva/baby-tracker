@@ -1,34 +1,29 @@
 import React from 'react';
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import "./FoodItem.scss";
 import Datetime from 'react-datetime';
 import { Form } from 'react-bootstrap';
-import { DELETE_FOOD_ITEM_FOR_CHILD, INSERT_FOOD_ITEM_FOR_CHILD } from '../../../graphql/queries';
+import { DELETE_FOOD_ITEM_FOR_CHILD, FOOD_ITEMS_PER_CHILD, INSERT_FOOD_ITEM_FOR_CHILD } from '../../../graphql/queries';
 import { useRealmApp } from '../../../RealmApp';
 
 function FoodItem(props: any) {
 
     const app = useRealmApp();
+    const dtInputProps = {
+        placeholder: 'Дата на въвеждане',
+    };
 
-    // const dtInputProps = {
-    //     placeholder: 'Изберете дата',
-    // };
+    const [introductionDate, setIntroductionDate] = React.useState(new Date());
 
-    // console.log("props", props);
-    // const [birthdate, setBirthDate] = React.useState();
-    // const [isOpen, setIsOpen] = React.useState(false);
 
-    // const changeDate = (event: any) => {
+    const changeDate = (event: any) => {
+        setIntroductionDate(event.toDate());
+        //TODO - update foodChildItem
+    }
 
-    //     setBirthDate(event.toDate());
-    // }
-
-    // const openCalendar = (event: any) => {
-    //     setIsOpen(true);
-    // }
-
-    console.log(props);
     const foodItem = props;
+
+    const [isSelected, setIsSelected] = React.useState(foodItem.isSelected);
     const [insertFoodItem] = useMutation(INSERT_FOOD_ITEM_FOR_CHILD);
     const [deleteFoodItem] = useMutation(DELETE_FOOD_ITEM_FOR_CHILD);
 
@@ -37,6 +32,7 @@ function FoodItem(props: any) {
         if (event.target.checked) {
             var item = {
                 createdOn: new Date(),
+                introductionDate: new Date(),
                 food: { link: event.target.name },
                 child: { link: app.currentUser.customData.children[0].$oid } //TODO: get currently selected child
             };
@@ -45,7 +41,25 @@ function FoodItem(props: any) {
                 variables: {
                     input: item,
                 },
+                update: (cache, { data }) => {
+                    var dt = data.insertOneChildFoodItem;
+
+                    const existingItems = cache.readQuery({
+                        variables: { childId: app.currentUser.customData.children[0].$oid },
+                        query: FOOD_ITEMS_PER_CHILD as any,
+                    }) as any;
+
+                    var updatedItems = [...existingItems.childFoodItems, dt];
+                    cache.writeQuery({
+                        query: FOOD_ITEMS_PER_CHILD as any,
+                        variables: { childId: app.currentUser.customData.children[0].$oid },
+                        data: { ...existingItems, childFoodItems: updatedItems }
+                    });
+                },
             });
+
+            setIsSelected(true);
+            setIntroductionDate(new Date());
         }
         else {
             deleteFoodItem({
@@ -54,8 +68,12 @@ function FoodItem(props: any) {
                     childId: app.currentUser.customData.children[0].$oid
                 },
             });
+
+            setIsSelected(false);
         }
     }
+    var introDate = foodItem.introductionDate ? foodItem.introductionDate.toString("MM-DD-YYYY") : introductionDate;
+
 
     return (
         <div className="row food-item">
@@ -71,18 +89,15 @@ function FoodItem(props: any) {
                     />
                 </div>
             </div>
-            {/* <div className="col-2">
+            <div className="col-4" style={{ display: isSelected ? "block" : "none" }}>
                 <div className="date-given">
-                    <button type="button" className="btn btn-dark" onClick={openCalendar}>Date</button>
+                    <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" initialValue={foodItem.introductionDate}
+                        onChange={changeDate} closeOnClickOutside={true}
+                        closeOnSelect={true} className="date-time-input" value={introDate} timeFormat={false} />
                 </div>
             </div>
-            <div className="col-4">
-                <div className="date-given">
-                    <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" onChange={changeDate} closeOnClickOutside={true} open={isOpen} closeOnSelect={true} />
-                </div>
-            </div> */}
 
-        </div>
+        </div >
     );
 }
 
