@@ -1,3 +1,24 @@
-.food-list-wrapper{
-    margin-top: 50px;
+.food-list-wrapper {
+  margin-top: 50px;
+
+  .food-item {
+    margin: 5px auto;
+    border-radius: 15px;
+    font-size: 20px;
+    padding-left: 20 px;
+    padding-top: 4 px;
+
+    &.selected {
+      background-color: #a4d578;
+    }
+  }
+  .food-item:hover {
+    background-color: #a9e476;
+    cursor: pointer;
+  }
+
+  .form-check {
+    margin: 0;
+    font-size: 20px;
+  }
 }

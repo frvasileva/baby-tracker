@@ -1,31 +1,34 @@
 import React from 'react';
 import { useMutation } from "@apollo/client";
-import "./FoodItem.scss";
+import Moment from 'react-moment';
 import Datetime from 'react-datetime';
 import { Form } from 'react-bootstrap';
 import { DELETE_FOOD_ITEM_FOR_CHILD, FOOD_ITEMS_PER_CHILD, INSERT_FOOD_ITEM_FOR_CHILD } from '../../../graphql/queries';
+import "./FoodItem.scss";
 import { useRealmApp } from '../../../RealmApp';
+
 
 function FoodItem(props: any) {
 
     const app = useRealmApp();
+    const foodItem = props;
+
     const dtInputProps = {
         placeholder: 'Дата на въвеждане',
     };
 
-    const [introductionDate, setIntroductionDate] = React.useState(new Date());
-
+    const [introductionDate, setIntroductionDate] = React.useState(foodItem?.introductionDate ?? new Date());
+    const [showEditor, setEditorVisibility] = React.useState(false);
 
     const changeDate = (event: any) => {
         setIntroductionDate(event.toDate());
-        //TODO - update foodChildItem
+        setEditorVisibility(false);
     }
 
-    const foodItem = props;
 
     const [isSelected, setIsSelected] = React.useState(foodItem.isSelected);
-    const [insertFoodItem] = useMutation(INSERT_FOOD_ITEM_FOR_CHILD);
-    const [deleteFoodItem] = useMutation(DELETE_FOOD_ITEM_FOR_CHILD);
+    const [insertFoodItem] = useMutation(INSERT_FOOD_ITEM_FOR_CHILD, { refetchQueries: [{ query: FOOD_ITEMS_PER_CHILD }] });
+    const [deleteFoodItem] = useMutation(DELETE_FOOD_ITEM_FOR_CHILD, { refetchQueries: [{ query: FOOD_ITEMS_PER_CHILD }] });
 
 
     const onChange = (event: any) => {
@@ -41,21 +44,21 @@ function FoodItem(props: any) {
                 variables: {
                     input: item,
                 },
-                update: (cache, { data }) => {
-                    var dt = data.insertOneChildFoodItem;
+                // update: (cache, { data }) => {
+                //     var dt = data.insertOneChildFoodItem;
 
-                    const existingItems = cache.readQuery({
-                        variables: { childId: app.currentUser.customData.children[0].$oid },
-                        query: FOOD_ITEMS_PER_CHILD as any,
-                    }) as any;
+                //     const existingItems = cache.readQuery({
+                //         variables: { childId: app.currentUser.customData.children[0].$oid },
+                //         query: FOOD_ITEMS_PER_CHILD as any,
+                //     }) as any;
 
-                    var updatedItems = [...existingItems.childFoodItems, dt];
-                    cache.writeQuery({
-                        query: FOOD_ITEMS_PER_CHILD as any,
-                        variables: { childId: app.currentUser.customData.children[0].$oid },
-                        data: { ...existingItems, childFoodItems: updatedItems }
-                    });
-                },
+                //     var updatedItems = [...existingItems.childFoodItems, dt];
+                //     cache.writeQuery({
+                //         query: FOOD_ITEMS_PER_CHILD as any,
+                //         variables: { childId: app.currentUser.customData.children[0].$oid },
+                //         data: { ...existingItems, childFoodItems: updatedItems }
+                //     });
+                // },
             });
 
             setIsSelected(true);
@@ -72,11 +75,15 @@ function FoodItem(props: any) {
             setIsSelected(false);
         }
     }
-    var introDate = foodItem.introductionDate ? foodItem.introductionDate.toString("MM-DD-YYYY") : introductionDate;
 
+    var introDate = foodItem.introductionDate ? foodItem.introductionDate.toString("MM-dd") : introductionDate;
+
+    const toggleBtnClick = (event: any) => {
+        setEditorVisibility(true);
+    }
 
     return (
-        <div className="row food-item">
+        <div className={isSelected ? "row food-item selected" : "row food-item"}>
             <div className="col-3">
                 <div className="form-check">
                     <Form.Check
@@ -91,9 +98,18 @@ function FoodItem(props: any) {
             </div>
             <div className="col-4" style={{ display: isSelected ? "block" : "none" }}>
                 <div className="date-given">
-                    <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" initialValue={foodItem.introductionDate}
-                        onChange={changeDate} closeOnClickOutside={true}
-                        closeOnSelect={true} className="date-time-input" value={introDate} timeFormat={false} />
+
+
+                    <Moment parse="YYYY-MM-DD" format="DD-MM-YYYY">
+                        {introductionDate}
+                    </Moment>
+                    <button type="button" className="edit-button" onClick={toggleBtnClick}><i className="far fa-edit"></i></button>
+                    {
+                        showEditor &&
+                        <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" initialValue={foodItem.introductionDate}
+                            onChange={changeDate} closeOnClickOutside={true}
+                            closeOnSelect={true} className="date-time-input" value={introDate} timeFormat={false} />
+                    }
                 </div>
             </div>
 

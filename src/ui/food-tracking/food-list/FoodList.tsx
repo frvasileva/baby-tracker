@@ -5,6 +5,7 @@ import { Layout } from '../../layout/Layout';
 import FoodItem from '../food-item/FoodItem';
 import './FoodList.scss';
 import { useRealmApp } from '../../../RealmApp';
+import { useEffect, useState } from 'react';
 
 function FoodList() {
     const app = useRealmApp();
@@ -16,10 +17,15 @@ function FoodList() {
         }
     });
 
+    const [foodItemsState, setFoodItemsState] = useState([]);
+
+    useEffect(() => {
+        setFoodItemsState(foodItemsPerChild?.data?.childFoodItems);
+    }, [foodItemsPerChild]);
+
+
     if (foodItems.loading || foodItems.error || foodItemsPerChild.loading || foodItemsPerChild.error)
         return <div>Loading</div>
-
-
     const fItemsPerChild = foodItemsPerChild.data.childFoodItems;
     const items = foodItems.data.foodItems.map((item: any) => (
         {
@@ -39,12 +45,12 @@ function FoodList() {
     return (
         <Layout>
             <div className="food-list-wrapper">
-                <Tabs defaultActiveKey="all" id="food-list-tabs" className="mb-3">
-                    <Tab eventKey="all" title="Всички">
+                <Tabs defaultActiveKey="vegetables" id="food-list-tabs" className="mb-3">
+                    {/* <Tab eventKey="all" title="Всички">
                         {
                             items.map((item: any) => <FoodItem {...item} key={item.name} tabName="all" />)
                         }
-                    </Tab>
+                    </Tab> */}
                     <Tab eventKey="vegetables" title="Зеленчуци">
                         {
                             vegetables.map((item: any) => <FoodItem {...item} key={item.name} />)

@@ -2,11 +2,17 @@
   padding: 5px 0;
   font-size: 18px;
 
-  .date-time-input{
+  .date-time-input {
     padding: 5px;
   }
 
-  .form-control{
+  .form-control {
     padding: 5px;
+  }
+
+  .edit-button {
+    background-color: transparent;
+    border: 0px;
+    margin-left: 10px;
   }
 }
