@@ -104,6 +104,15 @@ export const INSERT_FOOD_ITEM_FOR_CHILD = gql`
 }
 `;
 
+export const UPDATE_FOOD_ITEM_FOR_CHILD = gql`
+   mutation ($childId: ObjectId, $foodId: ObjectId, $introductionDate: DateTime) {
+    updateOneChildFoodItem(query:{child:{_id:$childId}, food:{_id:$foodId}}, set:{introductionDate:$introductionDate}){
+    _id
+    introductionDate
+  }
+}
+`;
+
 export const DELETE_FOOD_ITEM_FOR_CHILD = gql`
    mutation ($childId: ObjectId, $foodId: ObjectId) {
     deleteOneChildFoodItem(
