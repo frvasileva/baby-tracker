@@ -2,7 +2,7 @@ import React from 'react';
 import { useMutation } from "@apollo/client";
 import Moment from 'react-moment';
 import Datetime from 'react-datetime';
-import { Form } from 'react-bootstrap';
+import { Form, FormGroup } from 'react-bootstrap';
 import {
     DELETE_FOOD_ITEM_FOR_CHILD,
     FOOD_ITEMS_PER_CHILD,
@@ -11,6 +11,7 @@ import {
 } from '../../../graphql/queries';
 import "./FoodItem.scss";
 import { useRealmApp } from '../../../RealmApp';
+import { Button, Checkbox, FormControlLabel } from '@material-ui/core';
 
 
 function FoodItem(props: any) {
@@ -83,7 +84,7 @@ function FoodItem(props: any) {
         <div className={isSelected ? "row food-item selected" : "row food-item"}>
             <div className="col-3">
                 <div className="form-check">
-                    <Form.Check
+                    {/* <Form.Check
                         type="checkbox"
                         id={foodItem.name + props.tabName}
                         name={foodItem._id}
@@ -91,6 +92,14 @@ function FoodItem(props: any) {
                         onChange={onChange}
                         defaultChecked={foodItem.isSelected}
                     />
+ */}
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox defaultChecked={foodItem.isSelected} />}
+                            id={foodItem.name + props.tabName}
+                            name={foodItem._id}
+                            onChange={onChange}
+                            label={foodItem.name} />
+                    </FormGroup>
                 </div>
             </div>
             <div className="col-4" style={{ display: isSelected ? "block" : "none" }}>
