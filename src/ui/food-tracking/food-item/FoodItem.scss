@@ -1,8 +1,8 @@
 .food-item {
   padding: 5px 0;
   font-size: 18px;
-  font-family: 'PT Sans', sans-serif;
-  
+  font-family: "PT Sans", sans-serif;
+
   .date-time-input {
     padding: 5px;
   }
@@ -14,6 +14,9 @@
   .edit-button {
     background-color: transparent;
     border: 0px;
+  }
+
+  .far.fa-edit {
     margin-left: 10px;
   }
 }

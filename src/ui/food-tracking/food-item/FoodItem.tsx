@@ -21,7 +21,7 @@ function FoodItem(props: any) {
         placeholder: 'Дата на въвеждане',
     };
 
-    const [introductionDate, setIntroductionDate] = React.useState(foodItem.introductionDate ? foodItem.introductionDate : new Date("02-02-2021"));
+    const [introductionDate, setIntroductionDate] = React.useState(foodItem.introductionDate ? new Date(foodItem.introductionDate) : new Date("02-02-2021"));
     const [showEditor, setEditorVisibility] = React.useState(false);
 
     const [isSelected, setIsSelected] = React.useState(foodItem.isSelected);
@@ -31,10 +31,11 @@ function FoodItem(props: any) {
 
     const changeDate = (event: any) => {
         console.log("event", event._d);
-        console.log(".toString()", event.toDate());
         setIntroductionDate(event._d);
         setEditorVisibility(false);
-var ddd = event.toDate();
+
+        var ddd = event.toDate();
+
         updateFoodItem({
             variables: {
                 foodId: foodItem._id,
@@ -74,8 +75,6 @@ var ddd = event.toDate();
         }
     }
 
-    var introDate = foodItem.introductionDate ? foodItem.introductionDate.toString("MM-dd") : introductionDate;
-
     const toggleBtnClick = (event: any) => {
         setEditorVisibility(true);
     }
@@ -96,15 +95,19 @@ var ddd = event.toDate();
             </div>
             <div className="col-4" style={{ display: isSelected ? "block" : "none" }}>
                 <div className="date-given">
-                    <Moment parse="YYYY-MM-DD" format="DD-MM-YYYY">
-                        {introductionDate}
-                    </Moment>
-                    <button type="button" className="edit-button" onClick={toggleBtnClick}><i className="far fa-edit"></i></button>
                     {
                         showEditor &&
-                        <Datetime inputProps={dtInputProps} dateFormat="MM-DD-YYYY" initialValue={introductionDate}
+                        <Datetime inputProps={dtInputProps} dateFormat="DD.MM.YYYY" initialValue={introductionDate}
                             onChange={changeDate} closeOnClickOutside={true}
-                            closeOnSelect={true} className="date-time-input" value={introDate} timeFormat={false} />
+                            closeOnSelect={true} className="date-time-input" value={introductionDate} timeFormat={false} />
+                    }
+                    {
+                        !showEditor &&
+                        <button type="button" className="edit-button" onClick={toggleBtnClick}>
+                            <Moment format="DD.MM.YYYY" local>
+                                {introductionDate}
+                            </Moment><i className="far fa-edit"></i>
+                        </button>
                     }
                 </div>
             </div>
