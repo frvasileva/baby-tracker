@@ -9,12 +9,12 @@
     padding-top: 4px;
 
     &.selected {
-      background-color: #a4d578;
+      color: green;
     }
   }
-  
+
   .food-item:hover {
-    background-color: #a9e476;
+    color: green;
     cursor: pointer;
   }
 

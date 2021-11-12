@@ -2,7 +2,7 @@ import React from 'react';
 import { useMutation } from "@apollo/client";
 import Moment from 'react-moment';
 import Datetime from 'react-datetime';
-import { Form, FormGroup } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import {
     DELETE_FOOD_ITEM_FOR_CHILD,
     FOOD_ITEMS_PER_CHILD,
@@ -11,8 +11,9 @@ import {
 } from '../../../graphql/queries';
 import "./FoodItem.scss";
 import { useRealmApp } from '../../../RealmApp';
-import { Button, Checkbox, FormControlLabel } from '@material-ui/core';
-
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 function FoodItem(props: any) {
     const app = useRealmApp();
