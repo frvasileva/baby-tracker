@@ -10,6 +10,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import List from '@mui/material/List';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -106,9 +107,11 @@ function FoodList() {
                         }
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        {
-                            fruits.map((item: any) => <FoodItem {...item} key={item.name} />)
-                        }
+                        <List sx={{ width: '80%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                            {
+                                fruits.map((item: any) => <FoodItem {...item} key={item.name} />)
+                            }
+                        </List>
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         {
