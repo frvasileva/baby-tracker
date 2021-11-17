@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import { FOOD_ITEMS_TILE } from '../../../graphql/queries';
 import { useQuery } from '@apollo/client';
 import LoadingScreen from '../../layout/LoadingScreen';
+import FoodFilters from '../food-filters/FoodFilters';
 function FoodInfoList() {
 
 
@@ -11,10 +12,10 @@ function FoodInfoList() {
     if (foodItems.loading || foodItems.error)
         return <LoadingScreen />
 
-   
+
     return (
         <Layout>
-
+            <FoodFilters />
             <Grid container spacing={2}>
                 {foodItems.data.foodItems.map((itm: any) => {
                     return <>

@@ -22,6 +22,7 @@
     "date-fns": "^2.25.0",
     "graphql": "^16.0.0",
     "graphql-tag": "^2.12.5",
+    "material-ui-icons": "^1.0.0-beta.36",
     "moment": "^2.29.1",
     "nodemon": "^2.0.14",
     "react": "^17.0.2",
