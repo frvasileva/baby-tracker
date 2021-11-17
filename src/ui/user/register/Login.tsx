@@ -2,7 +2,8 @@ import React from "react";
 import { useRealmApp } from "../../../RealmApp";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { useMutation } from "@apollo/client";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 
 export const Login = () => {
@@ -43,6 +44,13 @@ export const Login = () => {
                                         setError((e) => ({ ...e, email: null }));
                                         setEmail(e.target.value);
                                     }}
+                                />
+
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Required"
+                                    defaultValue="Hello World"
                                 />
                             </div>
                             <div className="form-group">

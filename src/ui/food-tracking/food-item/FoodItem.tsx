@@ -87,7 +87,7 @@ function FoodItem(props: any) {
                         showEditor &&
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
-                                label="Basic example"
+                                label="Дата на въвеждане"
                                 value={introductionDate}
                                 onChange={changeDate}
                                 renderInput={(params) => <TextField {...params} />}

@@ -28,6 +28,35 @@ const fragments = {
       imagePath
     }
   `,
+  foodInfo_tiles: gql`
+    fragment FoodItemsTile on FoodItem {
+      _id
+    name    
+    friendlyUrl
+    name
+    positionOrder
+    prepTime
+    productImage
+    friendlyUrl
+     
+    }
+  `,
+  foodInfo_detailes: gql`
+    fragment FoodItemDetails on FoodItem{
+      _id
+    name
+    allergenType
+    foodGroup
+    friendlyUrl
+    isVisible
+    isCommonAllergen
+    name
+    positionOrder
+    prepTime
+    productImage
+    friendlyUrl
+    }
+  `,
 };
 
 export const INSERT_USER_CUSTOM_INFO = gql`
@@ -38,6 +67,7 @@ export const INSERT_USER_CUSTOM_INFO = gql`
     }
   }
 `;
+
 export const INSERT_CHILD_PROFILE = gql`
   mutation ($input: ChildProfileInsertInput!) {
     insertOneChildProfile(data: $input) {
@@ -73,6 +103,15 @@ export const FOOD_ITEMS = gql`
         positionOrder
     }
   }
+`;
+export const FOOD_ITEMS_TILE = gql`
+  query {
+        foodItems {
+       ...FoodItemsTile
+    }
+  }
+  ${fragments.foodInfo_tiles}
+
 `;
 export const FOOD_ITEMS_PER_CHILD = gql`
   query($childId: ObjectId) {

@@ -11,6 +11,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
+import FoodListItem from './FoodListItem';
+import LoadingScreen from '../../layout/LoadingScreen';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -69,7 +71,7 @@ function FoodList() {
 
 
     if (foodItems.loading || foodItems.error || foodItemsPerChild.loading || foodItemsPerChild.error)
-        return <div>Loading</div>
+        return <LoadingScreen />
     const fItemsPerChild = foodItemsPerChild.data.childFoodItems;
     const items = foodItems.data.foodItems.map((item: any) => (
         {
@@ -86,11 +88,16 @@ function FoodList() {
     var meat = items.filter((item: any) => item.foodGroup === "meat");
     var other = items.filter((item: any) => item.foodGroup === "other");
 
+    const foodGroups = ["vegetables", "fruits", "dairy", "grain", "meat", "other"];
+    
+    function filterItems(filter: string) {
+        return items.filter((item: any) => item.foodGroup === filter);
+    }
 
     return (
         <Layout>
             <div className="food-list-wrapper">
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{ width: '100%', backgroundColor: "#eceff1" }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Зеленчуци" {...a11yProps(0)} />
@@ -101,37 +108,24 @@ function FoodList() {
                             <Tab label="Разни" {...a11yProps(5)} />
                         </Tabs>
                     </Box>
+
                     <TabPanel value={value} index={0}>
-                        {
-                            vegetables.map((item: any) => <FoodItem {...item} key={item.name} />)
-                        }
+                        <FoodListItem items={vegetables} />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <List sx={{ width: '80%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                            {
-                                fruits.map((item: any) => <FoodItem {...item} key={item.name} />)
-                            }
-                        </List>
+                        <FoodListItem items={fruits} />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        {
-                            meat.map((item: any) => <FoodItem {...item} key={item.name} />)
-                        }
+                        <FoodListItem items={meat} />
                     </TabPanel>
                     <TabPanel value={value} index={3}>
-                        {
-                            grain.map((item: any) => <FoodItem {...item} key={item.name} />)
-                        }
+                        <FoodListItem items={grain} />
                     </TabPanel>
                     <TabPanel value={value} index={4}>
-                        {
-                            dairy.map((item: any) => <FoodItem {...item} key={item.name} />)
-                        }
+                        <FoodListItem items={dairy} />
                     </TabPanel>
                     <TabPanel value={value} index={5}>
-                        {
-                            other.map((item: any) => <FoodItem {...item} key={item.name} />)
-                        }
+                        <FoodListItem items={other} />
                     </TabPanel>
                 </Box>
             </div>
