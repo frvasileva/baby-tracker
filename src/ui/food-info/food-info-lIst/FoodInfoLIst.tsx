@@ -7,11 +7,9 @@ import LoadingScreen from '../../layout/LoadingScreen';
 import FoodFilters from '../food-filters/FoodFilters';
 function FoodInfoList() {
 
-
     const foodItems = useQuery(FOOD_ITEMS_TILE);
     if (foodItems.loading || foodItems.error)
         return <LoadingScreen />
-
 
     return (
         <Layout>
@@ -19,13 +17,11 @@ function FoodInfoList() {
             <Grid container spacing={2}>
                 {foodItems.data.foodItems.map((itm: any) => {
                     return <>
-                        <Grid item xs={6} md={3}>
-                            <FoodInfoTile item={itm} />
+                        <Grid item xs={6} md={3} key={itm.name}>
+                            <FoodInfoTile item={itm} key={itm.name} />
                         </Grid></>
                 })}
             </Grid>
-
-
         </Layout>
     )
 }

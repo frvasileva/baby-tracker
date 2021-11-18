@@ -23,19 +23,34 @@ const MenuProps = {
     },
 };
 
-const names = [
-    'зеленчуци',
-    'плодове',
-    'зърнени',
-    'месо'
+const foodGroupNames = [
+    { label: 'зеленчуци', value: "vegetable" },
+    { label: 'плодове', value: "fruit" },
+    { label: 'зърнени', value: "grain" },
+    { label: 'млечни', value: "dairy" },
+    { label: 'семена', value: "sead" },
+    { label: 'разни', value: "other" },
+
+];
+const suggestionAge = [
+    { label: '6+ месеца', value: "6m" },
+    { label: '7+ месеца', value: "7m" },
+    { label: '8+ месеца', value: "8m" },
+    { label: '9+ месеца', value: "9m" },
+    { label: '10+ месеца', value: "10m" },
+    { label: '11+ месеца', value: "11m" },
+    { label: '12+ месеца', value: "12m" },
 ];
 
 
 function FoodFilters() {
 
     const [foodGroups, setFoodGroups] = useState<string[]>([]);
+    const [suggestionAges, setSuggestionAge] = useState<string[]>([]);
 
-    const handleChange = (event: SelectChangeEvent<typeof foodGroups>) => {
+    const handleChange = (event: SelectChangeEvent<typeof foodGroups | typeof suggestionAges>) => {
+
+        console.log("handle change foodGroups", foodGroups);
         const {
             target: { value },
         } = event;
@@ -45,9 +60,17 @@ function FoodFilters() {
         );
     };
 
+    const handleAgeChange = (event: SelectChangeEvent<typeof suggestionAges>) => {
+        const {
+            target: { value },
+        } = event;
+        setSuggestionAge(
+            // On autofill we get a the stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
 
     return (<>
-
         <Grid container spacing={2}>
             <Grid item xs={10}>
                 <TextField fullWidth label="Продукт" id="fullWidth" />
@@ -56,12 +79,11 @@ function FoodFilters() {
                 <Button variant="outlined" size="large">Търси</Button>
             </Grid>
             <Grid item xs={4}>
-
                 <FormControl sx={{ m: 1, width: 300 }}>
-                    <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                    <InputLabel id="foodGroupLabel">Групи храни</InputLabel>
                     <Select
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
+                        labelId="foodGroupLabel"
+                        id="foodGroupCheckbox"
                         multiple
                         value={foodGroups}
                         onChange={handleChange}
@@ -69,16 +91,38 @@ function FoodFilters() {
                         renderValue={(selected) => selected.join(', ')}
                         MenuProps={MenuProps}
                     >
-                        {names.map((name) => (
-                            <MenuItem key={name} value={name}>
-                                <Checkbox checked={foodGroups.indexOf(name) > -1} />
-                                <ListItemText primary={name} />
+                        {foodGroupNames.map((item) => (
+                            <MenuItem key={item.value} value={item.label}>
+                                <Checkbox checked={foodGroups.indexOf(item.label) > -1} />
+                                <ListItemText primary={item.label} />
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={4}>
+                <Grid item xs={4}>
+                    <FormControl sx={{ m: 1, width: 300 }}>
+                        <InputLabel id="ageSuggestionLabel">Възраст</InputLabel>
+                        <Select
+                            labelId="ageSuggestionLabel"
+                            id="foodGroupCheckbox"
+                            multiple
+                            value={suggestionAges}
+                            onChange={handleAgeChange}
+                            input={<OutlinedInput label="Възраст за въвеждане" />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {suggestionAge.map((item) => (
+                                <MenuItem key={item.value} value={item.label}>
+                                    <Checkbox checked={suggestionAges.indexOf(item.label) > -1} />
+                                    <ListItemText primary={item.label} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
             </Grid>
         </Grid>
     </>)
