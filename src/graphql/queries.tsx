@@ -164,3 +164,16 @@ export const DELETE_FOOD_ITEM_FOR_CHILD = gql`
   }
 }
 `;
+
+export const FOOD_ITEM_INFO_DETAILS = gql`
+  query($friendlyUrl: String) {
+    foodItem(query: {friendlyUrl:$friendlyUrl}) {
+      name
+      friendlyUrl
+      allergenType
+      positionOrder
+      productImage
+      description
+  }
+}  
+`;

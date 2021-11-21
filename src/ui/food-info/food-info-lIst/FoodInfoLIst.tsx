@@ -16,10 +16,11 @@ function FoodInfoList() {
             <FoodFilters />
             <Grid container spacing={2}>
                 {foodItems.data.foodItems.map((itm: any) => {
-                    return <>
-                        <Grid item xs={6} md={3} key={itm.name}>
+                    return <div key={itm.name}>
+                        <Grid item xs={6} md={3} >
                             <FoodInfoTile item={itm} key={itm.name} />
-                        </Grid></>
+                        </Grid>
+                    </div>
                 })}
             </Grid>
         </Layout>
