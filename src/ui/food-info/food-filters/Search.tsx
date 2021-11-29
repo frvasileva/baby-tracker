@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom"
 import { useLazyQuery } from '@apollo/client';
 import { FIND_FOOD_BY_NAME } from '../../../graphql/queries';
 import LoadingScreen from '../../layout/LoadingScreen';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Search(props: any) {
 
@@ -35,11 +36,8 @@ function Search(props: any) {
         getFood({ variables: { foodName: searchTerm } });
     }
 
-    if (loading || error)
-        return <LoadingScreen />
-
-
-
+    // if (loading || error)
+    //     return <LoadingScreen />
 
     return <>
         <Grid >
@@ -48,7 +46,8 @@ function Search(props: any) {
                     <TextField fullWidth label="Продукт" id="fullWidth" value={searchTerm} onChange={onChange} />
                 </Grid>
                 <Grid item xs={2}>
-                    <Button variant="outlined" size="large" type="submit">Търси</Button>
+                    <Button variant="outlined" size="large" type="submit">Търси  {loading && <CircularProgress  />} </Button>
+
                 </Grid>
             </form></Grid>
     </>

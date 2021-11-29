@@ -74,13 +74,13 @@ function FoodFilters(props: any) {
     };
 
     const searchSubmitted = (data: any) => {
+        console.log("data in filters", data);
         props.searchSubmitted(data);
     }
-
     return (<>
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Search searchSubmitted={searchSubmitted} />
+                <Search searchSubmitted={searchSubmitted}/>
             </Grid>
             <Grid item xs={4}>
                 <FormControl sx={{ m: 1, width: 300 }}>
