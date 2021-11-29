@@ -177,3 +177,15 @@ export const FOOD_ITEM_INFO_DETAILS = gql`
   }
 }  
 `;
+export const FIND_FOOD_BY_NAME = gql`
+  query($foodName: String) {
+    foodItems(query:{name: $foodName}) {
+      name
+      friendlyUrl
+      allergenType
+      positionOrder
+      productImage
+      description
+  }
+}  
+`;

@@ -1,6 +1,4 @@
-import * as React from 'react';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -11,8 +9,10 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { useHistory } from "react-router-dom"
+import Search from './Search';
 
-const ITEM_HEIGHT = 48;
+const ITEM_HEIGHT = 68;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
     PaperProps: {
@@ -42,41 +42,45 @@ const suggestionAge = [
     { label: '12+ месеца', value: "12m" },
 ];
 
+function FoodFilters(props: any) {
+    const history = useHistory()
+    var [selectedFoodGroups, setFoodGroups] = useState<string[]>([]);
+    var [selectedSuggestionAges, setSuggestionAge] = useState<string[]>([]);
 
-function FoodFilters() {
+    useEffect(() => {
 
-    const [foodGroups, setFoodGroups] = useState<string[]>([]);
-    const [suggestionAges, setSuggestionAge] = useState<string[]>([]);
+        var selectedFoods = foodGroupNames.filter(item => selectedFoodGroups.includes(item.label)).map(item => item.value);
+        var selectedAges = suggestionAge.filter(item => selectedSuggestionAges.includes(item.label)).map(item => item.value);
+        var url = "";
+        if (selectedFoods.length > 0) {
+            url = "?food=" + selectedFoods.join(',');
+        }
+        if (selectedAges.length > 0) {
+            var paramSeparator = selectedFoods.length > 0 ? "&" : "?";
+            url = url + paramSeparator + "age=" + selectedAges.join(',');
+        }
+        history.push(url)
 
-    const handleChange = (event: SelectChangeEvent<typeof foodGroups | typeof suggestionAges>) => {
+    }, [selectedSuggestionAges, selectedFoodGroups]);
 
-        console.log("handle change foodGroups", foodGroups);
-        const {
-            target: { value },
-        } = event;
-        setFoodGroups(
-            // On autofill we get a the stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
+    const handleChange = (event: SelectChangeEvent<typeof selectedFoodGroups>) => {
+        const { target: { value } } = event;
+        setFoodGroups(typeof value === 'string' ? value.split(',') : value);
     };
 
-    const handleAgeChange = (event: SelectChangeEvent<typeof suggestionAges>) => {
-        const {
-            target: { value },
-        } = event;
-        setSuggestionAge(
-            // On autofill we get a the stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
+    const handleAgeChange = (event: SelectChangeEvent<typeof selectedSuggestionAges>) => {
+        const { target: { value } } = event;
+        setSuggestionAge(typeof value === 'string' ? value.split(',') : value);
     };
+
+    const searchSubmitted = (data: any) => {
+        props.searchSubmitted(data);
+    }
 
     return (<>
         <Grid container spacing={2}>
-            <Grid item xs={10}>
-                <TextField fullWidth label="Продукт" id="fullWidth" />
-            </Grid>
-            <Grid item xs={2}>
-                <Button variant="outlined" size="large">Търси</Button>
+            <Grid item xs={12}>
+                <Search searchSubmitted={searchSubmitted} />
             </Grid>
             <Grid item xs={4}>
                 <FormControl sx={{ m: 1, width: 300 }}>
@@ -85,7 +89,7 @@ function FoodFilters() {
                         labelId="foodGroupLabel"
                         id="foodGroupCheckbox"
                         multiple
-                        value={foodGroups}
+                        value={selectedFoodGroups}
                         onChange={handleChange}
                         input={<OutlinedInput label="Групи храни" />}
                         renderValue={(selected) => selected.join(', ')}
@@ -93,7 +97,7 @@ function FoodFilters() {
                     >
                         {foodGroupNames.map((item) => (
                             <MenuItem key={item.value} value={item.label}>
-                                <Checkbox checked={foodGroups.indexOf(item.label) > -1} />
+                                <Checkbox checked={selectedFoodGroups.indexOf(item.label) > -1} />
                                 <ListItemText primary={item.label} />
                             </MenuItem>
                         ))}
@@ -108,7 +112,7 @@ function FoodFilters() {
                             labelId="ageSuggestionLabel"
                             id="foodGroupCheckbox"
                             multiple
-                            value={suggestionAges}
+                            value={selectedSuggestionAges}
                             onChange={handleAgeChange}
                             input={<OutlinedInput label="Възраст за въвеждане" />}
                             renderValue={(selected) => selected.join(', ')}
@@ -116,7 +120,7 @@ function FoodFilters() {
                         >
                             {suggestionAge.map((item) => (
                                 <MenuItem key={item.value} value={item.label}>
-                                    <Checkbox checked={suggestionAges.indexOf(item.label) > -1} />
+                                    <Checkbox checked={selectedSuggestionAges.indexOf(item.label) > -1} />
                                     <ListItemText primary={item.label} />
                                 </MenuItem>
                             ))}

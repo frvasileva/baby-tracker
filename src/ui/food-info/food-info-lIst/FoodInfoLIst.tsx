@@ -5,17 +5,24 @@ import { FOOD_ITEMS_TILE } from '../../../graphql/queries';
 import { useQuery } from '@apollo/client';
 import LoadingScreen from '../../layout/LoadingScreen';
 import FoodFilters from '../food-filters/FoodFilters';
+import { useState } from 'react';
 function FoodInfoList() {
 
-    const foodItems = useQuery(FOOD_ITEMS_TILE);
-    if (foodItems.loading || foodItems.error)
+    const foodItemsQuery = useQuery(FOOD_ITEMS_TILE);
+    const [foodItems, setFoodItems] = useState(foodItemsQuery.data.foodItems);
+
+    if (foodItemsQuery.loading || foodItemsQuery.error)
         return <LoadingScreen />
+
+    const searchSubmitted = (data: any) => {
+        setFoodItems(data.foodItems)
+    }
 
     return (
         <Layout>
-            <FoodFilters />
+            <FoodFilters searchSubmitted={searchSubmitted} />
             <Grid container spacing={2}>
-                {foodItems.data.foodItems.map((itm: any) => {
+                {foodItems?.map((itm: any) => {
                     return <div key={itm.name}>
                         <Grid item xs={6} md={3} >
                             <FoodInfoTile item={itm} key={itm.name} />
