@@ -2,27 +2,44 @@ import { useEffect, useState } from 'react';
 import { Layout } from '../../layout/Layout';
 import FoodInfoTile from '../food-info-tile/FoodInfoTile';
 import Grid from '@mui/material/Grid';
-import { FOOD_ITEMS_TILE } from '../../../graphql/queries';
-import { useQuery } from '@apollo/client';
+import { FIND_FOOD_BY_NAME, FOOD_ITEMS_TILE } from '../../../graphql/queries';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import LoadingScreen from '../../layout/LoadingScreen';
 import FoodFilters from '../food-filters/FoodFilters';
+import { useHistory } from 'react-router-dom';
 
 function FoodInfoList() {
 
-    const { data, error, loading } = useQuery(FOOD_ITEMS_TILE);
+    // const history = useHistory();
+    // useEffect(() => {
+    //     return history.listen((location) => {
+    //         // if (location.search == "") {
+    //         //     console.log('refetech executed');
+    //         //     refetch();
+    //         //     console.log(food?.foodItems);
+    //         // }
+    //     })
+    // }, [history])
+
+    const { data: foodList, error, loading, refetch } = useQuery(FOOD_ITEMS_TILE);
+    const [getFood, { data: foodByName }] = useLazyQuery(FIND_FOOD_BY_NAME);
+
     const [foodItems, setFoodItems] = useState([]);
 
     useEffect(() => {
-        setFoodItems(data?.foodItems)
-    }, [data])
-
+        setFoodItems(foodByName?.foodItems || foodList?.foodItems)
+    }, [foodList, foodByName])
 
     if (loading || error)
         return <LoadingScreen />
 
-
-    const searchSubmitted = (data: any) => {
-        setFoodItems(data.foodItems)
+    const searchSubmitted = (searchTerm: string) => {
+        if (searchTerm) {
+            getFood({ variables: { foodName: searchTerm } });
+        } else {
+            refetch();
+            setFoodItems(foodList.foodItems)
+        }
     }
 
     return (

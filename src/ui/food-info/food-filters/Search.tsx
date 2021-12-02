@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import { useHistory } from "react-router-dom"
 import { useLazyQuery } from '@apollo/client';
 import { FIND_FOOD_BY_NAME } from '../../../graphql/queries';
-import LoadingScreen from '../../layout/LoadingScreen';
 import CircularProgress from '@mui/material/CircularProgress';
 
 function Search(props: any) {
@@ -18,10 +17,8 @@ function Search(props: any) {
 
     useEffect(() => {
         if (data) {
-            props.searchSubmitted(data);
-
+            props.searchSubmitted(searchTerm);
         }
-
     }, [data])
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,18 +33,22 @@ function Search(props: any) {
         getFood({ variables: { foodName: searchTerm } });
     }
 
-    // if (loading || error)
-    //     return <LoadingScreen />
+    const clearSearch = (event: React.SyntheticEvent) => {
+        setSearchTerm("");
+        props.searchSubmitted("");
+    }
 
     return <>
         <Grid >
             <form onSubmit={handleSubmit} >
-                <Grid item xs={10}>
+                <Grid item xs={8}>
                     <TextField fullWidth label="Продукт" id="fullWidth" value={searchTerm} onChange={onChange} />
                 </Grid>
                 <Grid item xs={2}>
-                    <Button variant="outlined" size="large" type="submit">Търси  {loading && <CircularProgress  />} </Button>
-
+                    <Button variant="outlined" size="large" type="submit">Търси{loading && <CircularProgress />} </Button>
+                </Grid>
+                <Grid item xs={2}>
+                    <Button variant="outlined" size="large" type="button" onClick={clearSearch}>Изчисти</Button>
                 </Grid>
             </form></Grid>
     </>

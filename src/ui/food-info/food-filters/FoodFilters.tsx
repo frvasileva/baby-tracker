@@ -73,9 +73,9 @@ function FoodFilters(props: any) {
         setSuggestionAge(typeof value === 'string' ? value.split(',') : value);
     };
 
-    const searchSubmitted = (data: any) => {
-        console.log("data in filters", data);
-        props.searchSubmitted(data);
+    const searchSubmitted = (searchTerm: string) => {
+        console.log("searchTerm", searchTerm);
+        props.searchSubmitted(searchTerm);
     }
     return (<>
         <Grid container spacing={2}>
