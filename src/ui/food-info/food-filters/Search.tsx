@@ -7,6 +7,10 @@ import { useHistory } from "react-router-dom"
 import { useLazyQuery } from '@apollo/client';
 import { FIND_FOOD_BY_NAME } from '../../../graphql/queries';
 import CircularProgress from '@mui/material/CircularProgress';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+// import CachedIcon from '@mui/icons-material/Cached';
+// import { white } from '@mui/material/colors';
 
 function Search(props: any) {
 
@@ -39,18 +43,21 @@ function Search(props: any) {
     }
 
     return <>
-        <Grid >
-            <form onSubmit={handleSubmit} >
-                <Grid item xs={8}>
-                    <TextField fullWidth label="Продукт" id="fullWidth" value={searchTerm} onChange={onChange} />
+        <form onSubmit={handleSubmit} >
+            <Grid container spacing={2} columns={12}>
+                <Grid item md={8} xs={12}>
+                    <TextField label="Продукт" fullWidth id="fullWidth" value={searchTerm} onChange={onChange} />
                 </Grid>
-                <Grid item xs={2}>
-                    <Button variant="outlined" size="large" type="submit">Търси{loading && <CircularProgress />} </Button>
+                <Grid item md={2} xs={12}>
+                    <Button variant="contained" size="large" type="submit" startIcon={loading ? <CircularProgress size={24} color="info"/> : <SearchIcon />} >Търси </Button>
                 </Grid>
-                <Grid item xs={2}>
-                    <Button variant="outlined" size="large" type="button" onClick={clearSearch}>Изчисти</Button>
+                <Grid item md={2} xs={12}>
+                    {searchTerm !== "" &&
+                        <Button variant="text" size="large" type="button" onClick={clearSearch} startIcon={<ClearIcon />} >Изчисти</Button>
+                    }
                 </Grid>
-            </form></Grid>
+            </Grid>
+        </form>
     </>
 }
 

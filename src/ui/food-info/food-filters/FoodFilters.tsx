@@ -78,11 +78,11 @@ function FoodFilters(props: any) {
         props.searchSubmitted(searchTerm);
     }
     return (<>
+
+        <Search searchSubmitted={searchSubmitted} />
+        <br />
         <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <Search searchSubmitted={searchSubmitted}/>
-            </Grid>
-            <Grid item xs={4}>
+            <Grid item md={4} xs={12}>
                 <FormControl sx={{ m: 1, width: 300 }}>
                     <InputLabel id="foodGroupLabel">Групи храни</InputLabel>
                     <Select
@@ -104,29 +104,27 @@ function FoodFilters(props: any) {
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs={4}>
-                <Grid item xs={4}>
-                    <FormControl sx={{ m: 1, width: 300 }}>
-                        <InputLabel id="ageSuggestionLabel">Възраст</InputLabel>
-                        <Select
-                            labelId="ageSuggestionLabel"
-                            id="foodGroupCheckbox"
-                            multiple
-                            value={selectedSuggestionAges}
-                            onChange={handleAgeChange}
-                            input={<OutlinedInput label="Възраст за въвеждане" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            {suggestionAge.map((item) => (
-                                <MenuItem key={item.value} value={item.label}>
-                                    <Checkbox checked={selectedSuggestionAges.indexOf(item.label) > -1} />
-                                    <ListItemText primary={item.label} />
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
+            <Grid item md={4} xs={12}>
+                <FormControl sx={{ m: 1, width: 300 }}>
+                    <InputLabel id="ageSuggestionLabel">Възраст</InputLabel>
+                    <Select
+                        labelId="ageSuggestionLabel"
+                        id="foodGroupCheckbox"
+                        multiple
+                        value={selectedSuggestionAges}
+                        onChange={handleAgeChange}
+                        input={<OutlinedInput label="Възраст за въвеждане" />}
+                        renderValue={(selected) => selected.join(', ')}
+                        MenuProps={MenuProps}
+                    >
+                        {suggestionAge.map((item) => (
+                            <MenuItem key={item.value} value={item.label}>
+                                <Checkbox checked={selectedSuggestionAges.indexOf(item.label) > -1} />
+                                <ListItemText primary={item.label} />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Grid>
         </Grid>
     </>)

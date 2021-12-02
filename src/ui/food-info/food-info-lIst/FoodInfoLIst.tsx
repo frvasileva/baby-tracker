@@ -37,7 +37,7 @@ function FoodInfoList() {
         if (searchTerm) {
             getFood({ variables: { foodName: searchTerm } });
         } else {
-            refetch();
+            // refetch();
             setFoodItems(foodList.foodItems)
         }
     }
