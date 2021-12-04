@@ -7,3 +7,11 @@ export interface FoodInfo {
   productImage: string;
   suggestionAge: string;
 }
+
+export interface FoodItemTracker {
+  _id: number;
+  name: string;
+  foodGroup: string;
+  positionOrder: number;
+  productImage: string;
+}

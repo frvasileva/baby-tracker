@@ -100,6 +100,7 @@ export const FOOD_ITEMS = gql`
         name
         foodGroup
         positionOrder
+        productImage
     }
   }
 `;

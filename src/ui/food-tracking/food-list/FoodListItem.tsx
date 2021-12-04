@@ -1,7 +1,8 @@
 import { List } from "@mui/material";
+import { FoodItemTracker } from "../../../types/types";
 import FoodItem from "../food-item/FoodItem";
 
-function FoodListItem(props: any) {
+function FoodListItem(props: { items: FoodItemTracker[] }) {
 
     const items = props.items;
     console.log("items props", items);

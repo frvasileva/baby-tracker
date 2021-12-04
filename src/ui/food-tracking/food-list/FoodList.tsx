@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { FOOD_ITEMS, FOOD_ITEMS_PER_CHILD } from '../../../graphql/queries';
 import { Layout } from '../../layout/Layout';
-import FoodItem from '../food-item/FoodItem';
 import './FoodList.scss';
 import { useRealmApp } from '../../../RealmApp';
 import { useEffect, useState } from 'react';
@@ -10,9 +9,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
 import FoodListItem from './FoodListItem';
 import LoadingScreen from '../../layout/LoadingScreen';
+import { FoodItemTracker } from '../../../types/types';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -72,8 +71,9 @@ function FoodList() {
 
     if (foodItems.loading || foodItems.error || foodItemsPerChild.loading || foodItemsPerChild.error)
         return <LoadingScreen />
+
     const fItemsPerChild = foodItemsPerChild.data.childFoodItems;
-    const items = foodItems.data.foodItems.map((item: any) => (
+    const items = foodItems.data.foodItems.map((item: FoodItemTracker) => (
         {
             ...item,
             isSelected: fItemsPerChild.some((itm: any) => itm.food._id === item._id),
