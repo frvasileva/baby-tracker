@@ -1,25 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Layout } from '../../layout/Layout';
 import FoodInfoTile from '../food-info-tile/FoodInfoTile';
-import Grid from '@mui/material/Grid';
 import { FIND_FOOD_BY_NAME, FOOD_ITEMS_TILE } from '../../../graphql/queries';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import LoadingScreen from '../../layout/LoadingScreen';
 import FoodFilters from '../food-filters/FoodFilters';
-import { useHistory } from 'react-router-dom';
+import "./FoodInfoLIst.scss";
+import { FoodInfo } from '../../../types/types';
 
 function FoodInfoList() {
-
-    // const history = useHistory();
-    // useEffect(() => {
-    //     return history.listen((location) => {
-    //         // if (location.search == "") {
-    //         //     console.log('refetech executed');
-    //         //     refetch();
-    //         //     console.log(food?.foodItems);
-    //         // }
-    //     })
-    // }, [history])
 
     const { data: foodList, error, loading, refetch } = useQuery(FOOD_ITEMS_TILE);
     const [getFood, { data: foodByName }] = useLazyQuery(FIND_FOOD_BY_NAME);
@@ -45,17 +34,17 @@ function FoodInfoList() {
     return (
         <Layout>
             <FoodFilters searchSubmitted={searchSubmitted} />
-            {
-                <Grid container spacing={2}>
-                    {foodItems?.map((itm: any) => {
-                        return <div key={itm.name}>
-                            <Grid item xs={6} md={3} >
-                                <FoodInfoTile item={itm} key={itm.name} />
-                            </Grid>
+
+            <div className="row food-items-wrapper">
+                {foodItems?.map((itm: FoodInfo) => {
+                    return <>
+                        <div className="col-lg-3 col-md-4 col-xs-12">
+                            <FoodInfoTile item={itm} key={itm.name} />
                         </div>
-                    })}
-                </Grid>
-            }
+                    </>
+                })}
+            </div>
+
         </Layout>
     )
 }

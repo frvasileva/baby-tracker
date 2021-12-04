@@ -3,7 +3,6 @@ import { Header } from "./Header";
 import "./Layout.scss";
 
 export const Layout = ({ children }) => (
-    
   <div className="container">
     <div className="row">
       <div className="col-md">

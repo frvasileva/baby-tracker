@@ -44,19 +44,19 @@ function Search(props: any) {
 
     return <>
         <form onSubmit={handleSubmit} >
-            <Grid container spacing={2} columns={12}>
-                <Grid item md={8} xs={12}>
+            <div className="row">
+                <div className='col-md-8'>
                     <TextField label="Продукт" fullWidth id="fullWidth" value={searchTerm} onChange={onChange} />
-                </Grid>
-                <Grid item md={2} xs={12}>
-                    <Button variant="contained" size="large" type="submit" startIcon={loading ? <CircularProgress size={24} color="info"/> : <SearchIcon />} >Търси </Button>
-                </Grid>
-                <Grid item md={2} xs={12}>
+                </div>
+                <div className='col-md-2'>
+                    <Button variant="contained" size="large" type="submit" startIcon={loading ? <CircularProgress size={24} color="info" className="search-btn" /> : <SearchIcon />} >Търси </Button>
+                </div>
+                <div className='col-md-2'>
                     {searchTerm !== "" &&
                         <Button variant="text" size="large" type="button" onClick={clearSearch} startIcon={<ClearIcon />} >Изчисти</Button>
                     }
-                </Grid>
-            </Grid>
+                </div>
+            </div>
         </form>
     </>
 }

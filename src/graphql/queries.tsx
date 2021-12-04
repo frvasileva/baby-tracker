@@ -30,15 +30,14 @@ const fragments = {
   `,
   foodInfo_tiles: gql`
     fragment FoodItemsTile on FoodItem {
-      _id
+    _id
     name    
     friendlyUrl
-    name
     positionOrder
     prepTime
     productImage
     friendlyUrl
-     
+    suggestionAge
     }
   `,
   foodInfo_detailes: gql`

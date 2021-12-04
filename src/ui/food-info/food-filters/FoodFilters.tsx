@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
@@ -81,9 +79,9 @@ function FoodFilters(props: any) {
 
         <Search searchSubmitted={searchSubmitted} />
         <br />
-        <Grid container spacing={2}>
-            <Grid item md={4} xs={12}>
-                <FormControl sx={{ m: 1, width: 300 }}>
+        <div className="row">
+            <div className="col-md-4 col-xs-12">
+                <FormControl sx={{ width: 300 }}>
                     <InputLabel id="foodGroupLabel">Групи храни</InputLabel>
                     <Select
                         labelId="foodGroupLabel"
@@ -103,9 +101,9 @@ function FoodFilters(props: any) {
                         ))}
                     </Select>
                 </FormControl>
-            </Grid>
-            <Grid item md={4} xs={12}>
-                <FormControl sx={{ m: 1, width: 300 }}>
+            </div>
+            <div className="col-md-4  col-xs-12">
+                <FormControl sx={{ width: 300 }} className='form-control-test'>
                     <InputLabel id="ageSuggestionLabel">Възраст</InputLabel>
                     <Select
                         labelId="ageSuggestionLabel"
@@ -125,8 +123,8 @@ function FoodFilters(props: any) {
                         ))}
                     </Select>
                 </FormControl>
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     </>)
 }
 

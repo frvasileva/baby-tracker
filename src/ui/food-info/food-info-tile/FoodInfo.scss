@@ -1,16 +1,20 @@
 .food-info-tile-wrapper {
   border: 1px solid white;
-  border-radius: 15px;
   padding: 10px;
   text-align: center;
-  min-height: 280px;
+  min-height: 230px;
   position: relative;
   margin-bottom: 50px;
+  display: inline-block;
+  padding: 24px;
+  box-shadow: 1px 1px 5px #c1c1c1;
+  border-radius: 10px;
 
   &:hover {
-    border: 1px solid #c1c1c1;
+    // border: 1px solid #5e5858;
     transition: 0.2s;
-    display: inline-block;
+    box-shadow: 2px 3px 5px #949494;
+    cursor: pointer;
   }
 
   .link {
@@ -18,12 +22,28 @@
   }
 
   .food-name {
-    font-size: 22px;
+    font-size: 20px;
     color: black;
     text-decoration: none;
     text-transform: capitalize;
     position: absolute;
     bottom: 0;
     font-family: "PT Sans", sans-serif;
+    text-transform: uppercase;
+  }
+
+  .food-tile-image {
+    max-width: 150px;
+    height: 100%;
+    max-height: 200px;
+  }
+
+  .form-control-test {
+    background-color: pink;
+    color: red;
+  }
+
+  .search-btn{
+    height: 40px;
   }
 }
