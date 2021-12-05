@@ -15,3 +15,12 @@ export interface FoodItemTracker {
   positionOrder: number;
   productImage: string;
 }
+export interface FoodItemPerChildTracker {
+  _id: number;
+  name: string;
+  foodGroup: string;
+  positionOrder: number;
+  productImage: string;
+  introductionDate: Date;
+  isSelected: boolean;
+}

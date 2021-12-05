@@ -89,7 +89,7 @@ function FoodList() {
     var other = items.filter((item: any) => item.foodGroup === "other");
 
     const foodGroups = ["vegetables", "fruits", "dairy", "grain", "meat", "other"];
-    
+
     function filterItems(filter: string) {
         return items.filter((item: any) => item.foodGroup === filter);
     }
@@ -108,7 +108,6 @@ function FoodList() {
                             <Tab label="Разни" {...a11yProps(5)} />
                         </Tabs>
                     </Box>
-
                     <TabPanel value={value} index={0}>
                         <FoodListItem items={vegetables} />
                     </TabPanel>

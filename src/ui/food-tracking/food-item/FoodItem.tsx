@@ -18,10 +18,11 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import { FoodItemPerChildTracker,  } from '../../../types/types';
 
-function FoodItem(props: any) {
+function FoodItem(props: { item: FoodItemPerChildTracker }) {
     const app = useRealmApp();
-    const foodItem = props;
+    const foodItem = props.item;
 
     const [introductionDate, setIntroductionDate] = React.useState(foodItem.introductionDate ? new Date(foodItem.introductionDate) : new Date("02-02-2021"));
     const [showEditor, setEditorVisibility] = React.useState(false);
@@ -114,7 +115,7 @@ function FoodItem(props: any) {
                             checked={isChecked}
                             inputProps={{ 'aria-labelledby': foodItem.name }}
                             id={foodItem.name}
-                            name={foodItem._id}
+                            name={foodItem._id.toString()}
                             color="success" className="custom-checkbox" />}
                         label={foodItem.name} className="custom-label" />
                 </FormGroup>
