@@ -31,7 +31,7 @@ export const Header = (props: any) => {
 
     return (
         <div className="menu-wrapper">
-            <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-custom navbar-fixed-top">
+            <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-custom navbar-fixed-top main-menu">
                 <div className="container">
                     <Link to="/" className="navbar-brand">
                         <i className="fas fa-baby-carriage"></i>    </Link>
