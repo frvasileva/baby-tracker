@@ -28,6 +28,7 @@ export const RealmAppProvider = ({ appId, children }) => {
     // If successful, app.currentUser is the user that just logged in
     setCurrentUser(app.currentUser);
   }
+  
   async function logOut() {
     // Log out the currently active user
     await app.currentUser?.logOut();

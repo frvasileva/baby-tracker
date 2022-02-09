@@ -27,4 +27,16 @@
   .custom-label {
     width: 100%;
   }
+
+  .food-text-wrapper {
+    img {
+      margin-right: 10px;
+    }
+
+    span {
+      margin-top: 10px;
+    }
+
+    display: inline-flex;
+  }
 }

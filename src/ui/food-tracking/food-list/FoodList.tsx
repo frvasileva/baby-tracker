@@ -3,7 +3,7 @@ import { FOOD_ITEMS, FOOD_ITEMS_PER_CHILD } from '../../../graphql/queries';
 import { Layout } from '../../layout/Layout';
 import './FoodList.scss';
 import { useRealmApp } from '../../../RealmApp';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import FoodListItem from './FoodListItem';
 import LoadingScreen from '../../layout/LoadingScreen';
 import { FoodItemTracker } from '../../../types/types';
+import ChildContext from '../../../context/ChildContext';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,11 +49,12 @@ function a11yProps(index: number) {
 
 function FoodList() {
     const app = useRealmApp();
+    const { currentChildId } = useContext(ChildContext);
 
     const foodItems = useQuery(FOOD_ITEMS);
     const foodItemsPerChild = useQuery(FOOD_ITEMS_PER_CHILD, {
         variables: {
-            childId: app.currentUser.customData.children[0].$oid
+            childId: currentChildId
         }
     });
 
@@ -80,7 +82,6 @@ function FoodList() {
             introductionDate: fItemsPerChild.find((itm: any) => itm.food._id === item._id)?.introductionDate
         }))
 
-    console.log("items", items);
     var vegetables = items.filter((item: any) => item.foodGroup === "vegetables");
     var fruits = items.filter((item: any) => item.foodGroup === "fruits");
     var dairy = items.filter((item: any) => item.foodGroup === "dairy");
@@ -97,7 +98,7 @@ function FoodList() {
     return (
         <Layout>
             <div className="food-list-wrapper">
-                <Box sx={{ width: '100%', backgroundColor: "#eceff1" }}>
+                <Box sx={{ width: '100%' }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Зеленчуци" {...a11yProps(0)} />

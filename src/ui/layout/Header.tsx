@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useRealmApp } from "../../RealmApp";
+import ChildSubmenu from "./ChildSubmenu";
 
 import "./Header.scss";
 
 export const Header = (props: any) => {
     const app = useRealmApp();
-    let history = useHistory();
     const [isLoggedIn, setIsLoggedIn] = useState(app.currentUser != null);
     var defaultUserOrganizationId = "";
 
@@ -20,14 +20,12 @@ export const Header = (props: any) => {
 
     const logout = () => {
         app.currentUser.logOut().then(() => {
-            //   setIsLoggedIn(false, () => {
-            //     history.push("/login");
-            //   });
             for (var a in localStorage) {
                 localStorage.removeItem(a);
             }
         });
     };
+
 
     return (
         <div className="menu-wrapper">
@@ -50,21 +48,20 @@ export const Header = (props: any) => {
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li className="nav-item active">
                                 <Link to="/" className="nav-link">
-                                    Начало
+                                    Видове храни
                                 </Link>
                             </li>
+
                             <li className="nav-item">
                                 <Link to="/food-list" className="nav-link">
-                                    Захранване
+                                    Въведени храни
                                 </Link>
                             </li>
-
                             <li className="nav-item">
-                                <Link to="/create-utm" className="nav-link">
-                                    Добави храна
+                                <Link to="/growth-tracker" className="nav-link">
+                                    Мерки
                                 </Link>
                             </li>
-
                         </ul>
                         {!isLoggedIn ? (
                             <ul className="nav navbar-nav navbar-right">
@@ -103,7 +100,8 @@ export const Header = (props: any) => {
                                                     className="dropdown-item profile-link"
                                                 >
                                                     Профил
-                                                </Link>{" "}
+                                                </Link>
+                                                <ChildSubmenu />
                                                 <hr />
                                                 <Link
                                                     to={
@@ -133,6 +131,7 @@ export const Header = (props: any) => {
                                                 >
                                                     Log out
                                                 </button>
+
                                             </div>
                                         </div>
                                     </div>

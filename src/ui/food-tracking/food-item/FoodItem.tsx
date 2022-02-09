@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useMutation } from "@apollo/client";
 import Moment from 'react-moment';
 import {
@@ -9,7 +9,6 @@ import {
 } from '../../../graphql/queries';
 import "./FoodItem.scss";
 import { useRealmApp } from '../../../RealmApp';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import ListItem from '@mui/material/ListItem';
@@ -18,7 +17,8 @@ import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { FoodItemPerChildTracker,  } from '../../../types/types';
+import { FoodItemPerChildTracker, } from '../../../types/types';
+import ChildContext from '../../../context/ChildContext';
 
 function FoodItem(props: { item: FoodItemPerChildTracker }) {
     const app = useRealmApp();
@@ -32,6 +32,9 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
     const [updateFoodItem] = useMutation(UPDATE_FOOD_ITEM_FOR_CHILD);
     const [deleteFoodItem] = useMutation(DELETE_FOOD_ITEM_FOR_CHILD, { refetchQueries: [{ query: FOOD_ITEMS_PER_CHILD }] });
 
+
+    const { currentChildId } = useContext(ChildContext);
+
     const changeDate = (event: any) => {
         setIntroductionDate(event);
         setEditorVisibility(false);
@@ -39,7 +42,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
         updateFoodItem({
             variables: {
                 foodId: foodItem._id,
-                childId: app.currentUser.customData.children[0].$oid,
+                childId: currentChildId,
                 introductionDate: new Date(event)
             },
         });
@@ -51,7 +54,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
                 createdOn: new Date(),
                 introductionDate: new Date(),
                 food: { link: event.target.name },
-                child: { link: app.currentUser.customData.children[0].$oid } //TODO: get currently selected child
+                child: { link: currentChildId }
             };
 
             insertFoodItem({
@@ -67,7 +70,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
             deleteFoodItem({
                 variables: {
                     foodId: event.target.name,
-                    childId: app.currentUser.customData.children[0].$oid
+                    childId: currentChildId
                 },
             });
 
@@ -108,7 +111,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
             disablePadding
         >
             <ListItemButton>
-                <FormGroup>
+                {/* <FormGroup>
                     <FormControlLabel control={
                         <Checkbox edge="end"
                             onChange={onChange}
@@ -117,8 +120,23 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
                             id={foodItem.name}
                             name={foodItem._id.toString()}
                             color="success" className="custom-checkbox" />}
-                        label={foodItem.name} className="custom-label" />
-                </FormGroup>
+                            label={foodItem.name} className="custom-label" />
+                   
+                </FormGroup> */}
+
+                <FormControlLabel
+                    control={
+                        <Checkbox checked={isChecked} onChange={onChange} id={foodItem.name} name={foodItem._id.toString()} className="custom-label" />
+                    }
+                    label={
+                        <React.Fragment>
+                            <p className='food-text-wrapper'>
+                                <img src={foodItem.productImage} key={foodItem._id.toString()} alt={foodItem.name} width="60px" />
+                                <span> {foodItem.name}</span>
+                            </p>
+                        </React.Fragment>
+                    }
+                />
             </ListItemButton>
         </ListItem>
     );

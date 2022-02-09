@@ -7,20 +7,18 @@ import LoadingScreen from "../../layout/LoadingScreen";
 export const UserProfile = () => {
 
     const app = useRealmApp();
-
     const { loading, error, data } = useQuery(GET_USER_PROFILE_INFO, {
         variables: {
             userId: app.currentUser.id,
         },
-    });
+    });   
 
     if (loading || error) return <LoadingScreen />;
-
     const user = data.user;
-    console.log("user data", data);
+
     return (<Layout>User profile
-        {user.name}
-        {user.children[0].name}
-        {user.children[1].name}
+        {user.name}<br />
+        {user.children[0].name}<br />
+        {user.children[1].name}<br />
     </Layout>)
 }
