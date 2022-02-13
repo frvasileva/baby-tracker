@@ -77,6 +77,14 @@ export const INSERT_CHILD_PROFILE = gql`
     }
   }
 `;
+
+export const LINK_CHILD_TO_USER = gql`
+  mutation ($query: UserQueryInput, $data: UserUpdateInput!) {
+    updateOneUser(query: $query, set: $data) {
+      _id
+    }
+  }
+`;
 export const GET_CHILD_PROFILE = gql`
   query ($_id: ObjectId) {
     childProfile(query: { _id: $_id }) {

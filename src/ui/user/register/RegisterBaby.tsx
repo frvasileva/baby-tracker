@@ -3,7 +3,7 @@ import React from "react";
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 import { useHistory } from "react-router-dom";
-import { INSERT_CHILD_PROFILE } from "../../../graphql/queries";
+import { INSERT_CHILD_PROFILE, LINK_CHILD_TO_USER } from "../../../graphql/queries";
 import { useRealmApp } from "../../../RealmApp";
 import { Layout } from "../../layout/Layout";
 import "./RegisterBaby.scss";
@@ -18,8 +18,12 @@ export const RegisterBaby = () => {
     const [birthdate, setBirthDate] = React.useState();
 
     const [insertChildProfile] = useMutation(INSERT_CHILD_PROFILE);
-    console.log("app.currentUser", app.currentUser);
+    const [updateUserProfile] = useMutation(LINK_CHILD_TO_USER);
 
+    var currentChildren = app.currentUser.customData.children.map(
+        (item: any) => item.$oid
+    );
+    
     const dtInputProps = {
         placeholder: 'Изберете дата',
         disabled: false,
@@ -40,16 +44,26 @@ export const RegisterBaby = () => {
             variables: {
                 input: profile,
             },
-        }).then(() => {
-            history.push("/");
-        });
+        }).then((result) => {
 
-        console.log("profile", profile);
+            var newChild = result.data.insertOneChildProfile._id;
+            var allChildren = [...currentChildren, newChild]
+
+            var query = { userId: app.currentUser.id };
+            var data = { children: { link: allChildren } };
+
+            updateUserProfile({
+                variables: {
+                    query: query,
+                    data: data,
+                },
+            }).then(() => {
+                history.push("/");
+            })
+        });
     };
 
     const changeDate = (event: any) => {
-        console.log(event.toDate()) // Tue Nov 24 2020 00:00:00 GMT+0400 (Gulf Standard Time)
-        console.log(event.format("DD-MM-YYYY")) //24-11-2020
         setBirthDate(event.toDate());
     }
 

@@ -11,14 +11,14 @@ export const UserProfile = () => {
         variables: {
             userId: app.currentUser.id,
         },
-    });   
+    });
 
     if (loading || error) return <LoadingScreen />;
     const user = data.user;
-
+    console.log("user", user)
     return (<Layout>User profile
-        {user.name}<br />
-        {user.children[0].name}<br />
-        {user.children[1].name}<br />
+        {user?.name}<br />
+        {/* {user?.children[0].name}<br />
+        {user?.children[1].name}<br /> */}
     </Layout>)
 }
