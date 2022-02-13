@@ -38,7 +38,7 @@ function FoodInfoList() {
             <div className="row food-items-wrapper">
                 {foodItems?.map((itm: FoodInfo) => {
                     return <>
-                        <div className="col-lg-3 col-md-4 col-xs-12">
+                        <div className="col-lg-3 col-md-4 col-xs-12" key={itm.name}>
                             <FoodInfoTile item={itm} key={itm.name} />
                         </div>
                     </>

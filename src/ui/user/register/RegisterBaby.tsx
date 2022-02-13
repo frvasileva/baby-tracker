@@ -18,6 +18,7 @@ export const RegisterBaby = () => {
     const [birthdate, setBirthDate] = React.useState();
 
     const [insertChildProfile] = useMutation(INSERT_CHILD_PROFILE);
+    console.log("app.currentUser", app.currentUser);
 
     const dtInputProps = {
         placeholder: 'Изберете дата',
@@ -25,6 +26,7 @@ export const RegisterBaby = () => {
     };
 
     const handleSubmit = async (event: any) => {
+
         event.preventDefault();
         var profile = {
             name,

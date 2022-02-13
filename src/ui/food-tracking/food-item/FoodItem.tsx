@@ -34,6 +34,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
 
 
     const { currentChildId } = useContext(ChildContext);
+    console.log("currentChildId fooditem", currentChildId);
 
     const changeDate = (event: any) => {
         setIntroductionDate(event);
@@ -54,7 +55,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
                 createdOn: new Date(),
                 introductionDate: new Date(),
                 food: { link: event.target.name },
-                child: { link: currentChildId }
+                child: { link: currentChildId } 
             };
 
             insertFoodItem({
@@ -70,7 +71,7 @@ function FoodItem(props: { item: FoodItemPerChildTracker }) {
             deleteFoodItem({
                 variables: {
                     foodId: event.target.name,
-                    childId: currentChildId
+                    childId: app.currentUser.customData.children[0].$oid
                 },
             });
 

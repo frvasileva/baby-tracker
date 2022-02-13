@@ -1,3 +1,11 @@
 .main-menu {
   background-color: white;
 }
+
+.dropdown-item:hover {
+  cursor: pointer;
+}
+
+.current-child {
+  background-color: greenyellow;
+}
