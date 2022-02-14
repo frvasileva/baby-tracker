@@ -15,10 +15,22 @@ export const UserProfile = () => {
 
     if (loading || error) return <LoadingScreen />;
     const user = data.user;
-    console.log("user", user)
-    return (<Layout>User profile
-        {user?.name}<br />
-        {/* {user?.children[0].name}<br />
-        {user?.children[1].name}<br /> */}
-    </Layout>)
+
+    return (
+        <Layout>User profile
+            <br />
+            {user?.name}
+            <br />
+            <hr />
+            <p>Children:</p>
+            {
+                user.children.length > 0 &&
+                user.children.map((item: any) => {
+                    return <p>
+                        {item.name}
+                    </p>
+                })
+            }
+
+        </Layout>)
 }

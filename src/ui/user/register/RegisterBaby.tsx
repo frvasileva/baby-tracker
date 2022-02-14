@@ -3,7 +3,7 @@ import React from "react";
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 import { useHistory } from "react-router-dom";
-import { INSERT_CHILD_PROFILE, LINK_CHILD_TO_USER } from "../../../graphql/queries";
+import { GET_USER_PROFILE_INFO, INSERT_CHILD_PROFILE, LINK_CHILD_TO_USER } from "../../../graphql/queries";
 import { useRealmApp } from "../../../RealmApp";
 import { Layout } from "../../layout/Layout";
 import "./RegisterBaby.scss";
@@ -23,7 +23,7 @@ export const RegisterBaby = () => {
     var currentChildren = app.currentUser.customData.children.map(
         (item: any) => item.$oid
     );
-    
+
     const dtInputProps = {
         placeholder: 'Изберете дата',
         disabled: false,
@@ -57,6 +57,14 @@ export const RegisterBaby = () => {
                     query: query,
                     data: data,
                 },
+                refetchQueries: [
+                    {
+                        query: GET_USER_PROFILE_INFO,
+                        variables: {
+                            userId: app.currentUser.id,
+                        }
+                    },
+                ],
             }).then(() => {
                 history.push("/");
             })
