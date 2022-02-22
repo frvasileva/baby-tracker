@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,6 +8,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { useHistory } from "react-router-dom"
 import Search from './Search';
+import Button from '@mui/material/Button';
+import { useLazyQuery } from '@apollo/client';
+import { FILTER_PRODUCTS_BY_AGE_AND_TYPE } from '../../../graphql/queries';
 
 const ITEM_HEIGHT = 68;
 const ITEM_PADDING_TOP = 8;
@@ -22,44 +24,30 @@ const MenuProps = {
 };
 
 const foodGroupNames = [
-    { label: 'зеленчуци', value: "vegetable" },
-    { label: 'плодове', value: "fruit" },
-    { label: 'зърнени', value: "grain" },
-    { label: 'млечни', value: "dairy" },
-    { label: 'семена', value: "sead" },
-    { label: 'разни', value: "other" },
+    { label: 'vegetbles', value: "vegetables" },
+    { label: 'fruits', value: "fruit" },
+    { label: 'grain', value: "grain" },
+    { label: 'dairy', value: "dairy" },
+    { label: 'seed', value: "seed" },
+    { label: 'other', value: "other" },
 
 ];
 const suggestionAge = [
-    { label: '6+ месеца', value: "6m" },
-    { label: '7+ месеца', value: "7m" },
-    { label: '8+ месеца', value: "8m" },
-    { label: '9+ месеца', value: "9m" },
-    { label: '10+ месеца', value: "10m" },
-    { label: '11+ месеца', value: "11m" },
-    { label: '12+ месеца', value: "12m" },
+    { label: '6+ months', value: 6 },
+    { label: '7+ months', value: 7 },
+    { label: '8+ months', value: 8 },
+    { label: '9+ months', value: 9 },
+    { label: '10+ months', value: 10 },
+    { label: '11+ months', value: 11 },
+    { label: '12+ months', value: 12 },
 ];
 
+
 function FoodFilters(props: any) {
+
     const history = useHistory()
     var [selectedFoodGroups, setFoodGroups] = useState<string[]>([]);
     var [selectedSuggestionAges, setSuggestionAge] = useState<string[]>([]);
-
-    useEffect(() => {
-
-        var selectedFoods = foodGroupNames.filter(item => selectedFoodGroups.includes(item.label)).map(item => item.value);
-        var selectedAges = suggestionAge.filter(item => selectedSuggestionAges.includes(item.label)).map(item => item.value);
-        var url = "";
-        if (selectedFoods.length > 0) {
-            url = "?food=" + selectedFoods.join(',');
-        }
-        if (selectedAges.length > 0) {
-            var paramSeparator = selectedFoods.length > 0 ? "&" : "?";
-            url = url + paramSeparator + "age=" + selectedAges.join(',');
-        }
-        history.push(url)
-
-    }, [selectedSuggestionAges, selectedFoodGroups]);
 
     const handleChange = (event: SelectChangeEvent<typeof selectedFoodGroups>) => {
         const { target: { value } } = event;
@@ -71,25 +59,48 @@ function FoodFilters(props: any) {
         setSuggestionAge(typeof value === 'string' ? value.split(',') : value);
     };
 
-    const searchSubmitted = (searchTerm: string) => {
-        console.log("searchTerm", searchTerm);
-        props.searchSubmitted(searchTerm);
+    const searchSubmitted = (searchTerm: string, selectedFoods: string, selectedAge: string, isFilter?: boolean) => {
+        props.searchSubmitted(searchTerm, isFilter);
     }
+
+    const [filterFood, { loading, data, error }] = useLazyQuery(FILTER_PRODUCTS_BY_AGE_AND_TYPE);
+
+    const submitFilters = () => {
+
+        var selectedFoods = foodGroupNames.filter(item => selectedFoodGroups.includes(item.label)).map(item => item.value);
+        var selectedAge = suggestionAge.filter(item => selectedSuggestionAges.includes(item.label)).map(item => item.value);
+        var url = "";
+        if (selectedFoods.length > 0) {
+            url = "?food=" + selectedFoods.join(',');
+        }
+        if (selectedAge.length > 0) {
+            var paramSeparator = selectedFoods.length > 0 ? "&" : "?";
+            url = url + paramSeparator + "age=" + selectedAge.join(',');
+        }
+
+
+        history.push(url);
+        var searchTerm = "";
+        props.searchSubmitted(searchTerm, selectedFoods, selectedAge, true);
+
+    }
+
     return (<>
 
         <Search searchSubmitted={searchSubmitted} />
         <br />
+        <p>Филтрирай:</p>
         <div className="row">
             <div className="col-md-4 col-xs-12">
                 <FormControl sx={{ width: 300 }}>
-                    <InputLabel id="foodGroupLabel">Групи храни</InputLabel>
+                    <InputLabel id="foodGroupLabel">Food groups</InputLabel>
                     <Select
                         labelId="foodGroupLabel"
                         id="foodGroupCheckbox"
                         multiple
                         value={selectedFoodGroups}
                         onChange={handleChange}
-                        input={<OutlinedInput label="Групи храни" />}
+                        input={<OutlinedInput label="Food groups" />}
                         renderValue={(selected) => selected.join(', ')}
                         MenuProps={MenuProps}
                     >
@@ -104,14 +115,14 @@ function FoodFilters(props: any) {
             </div>
             <div className="col-md-4  col-xs-12">
                 <FormControl sx={{ width: 300 }} className='form-control-test'>
-                    <InputLabel id="ageSuggestionLabel">Възраст</InputLabel>
+                    <InputLabel id="ageSuggestionLabel">Age</InputLabel>
                     <Select
                         labelId="ageSuggestionLabel"
                         id="foodGroupCheckbox"
                         multiple
                         value={selectedSuggestionAges}
                         onChange={handleAgeChange}
-                        input={<OutlinedInput label="Възраст за въвеждане" />}
+                        input={<OutlinedInput label="Introduction age" />}
                         renderValue={(selected) => selected.join(', ')}
                         MenuProps={MenuProps}
                     >
@@ -123,6 +134,10 @@ function FoodFilters(props: any) {
                         ))}
                     </Select>
                 </FormControl>
+            </div>
+            <div className="col-md-4  col-xs-12">
+                <Button variant="contained" size="large" type="submit" onClick={submitFilters}>Filter </Button>
+
             </div>
         </div>
     </>)

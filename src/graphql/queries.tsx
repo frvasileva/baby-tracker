@@ -186,6 +186,7 @@ export const FOOD_ITEM_INFO_DETAILS = gql`
   }
 }  
 `;
+
 export const FIND_FOOD_BY_NAME = gql`
   query($foodName: String) {
     foodItems(query:{name: $foodName}) {
@@ -195,6 +196,22 @@ export const FIND_FOOD_BY_NAME = gql`
       positionOrder
       productImage
       description
+      suggestionAge
+  }
+}  
+`;
+
+export const FILTER_PRODUCTS_BY_AGE_AND_TYPE = gql`
+  query($foodGroup: [String], $suggestionAge: [Int]) {
+    foodItems(query:{foodGroup_in:$foodGroup, suggestionAge_in: $suggestionAge}) {
+      name
+      friendlyUrl
+      allergenType
+      positionOrder
+      productImage
+      description
+      suggestionAge
+      foodGroup
   }
 }  
 `;

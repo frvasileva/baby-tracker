@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { Grid } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useHistory } from "react-router-dom"
@@ -9,8 +8,6 @@ import { FIND_FOOD_BY_NAME } from '../../../graphql/queries';
 import CircularProgress from '@mui/material/CircularProgress';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-// import CachedIcon from '@mui/icons-material/Cached';
-// import { white } from '@mui/material/colors';
 
 function Search(props: any) {
 
@@ -46,14 +43,14 @@ function Search(props: any) {
         <form onSubmit={handleSubmit} >
             <div className="row">
                 <div className='col-md-8'>
-                    <TextField label="Продукт" fullWidth id="fullWidth" value={searchTerm} onChange={onChange} />
+                    <TextField label="Food" fullWidth id="fullWidth" value={searchTerm} onChange={onChange} />
                 </div>
                 <div className='col-md-2'>
-                    <Button variant="contained" size="large" type="submit" startIcon={loading ? <CircularProgress size={24} color="info" className="search-btn" /> : <SearchIcon />} >Търси </Button>
+                    <Button variant="contained" size="large" type="submit" startIcon={loading ? <CircularProgress size={24} color="info" className="search-btn" /> : <SearchIcon />} >Search </Button>
                 </div>
                 <div className='col-md-2'>
                     {searchTerm !== "" &&
-                        <Button variant="text" size="large" type="button" onClick={clearSearch} startIcon={<ClearIcon />} >Изчисти</Button>
+                        <Button variant="text" size="large" type="button" onClick={clearSearch} startIcon={<ClearIcon />} >Clear</Button>
                     }
                 </div>
             </div>

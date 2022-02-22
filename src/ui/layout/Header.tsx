@@ -48,18 +48,16 @@ export const Header = (props: any) => {
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li className="nav-item active">
                                 <Link to="/" className="nav-link">
-                                    Видове храни
-                                </Link>
+                                    Food                                </Link>
                             </li>
 
                             <li className="nav-item">
                                 <Link to="/food-list" className="nav-link">
-                                    Въведени храни
-                                </Link>
+                                    Introduced foods                                </Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/growth-tracker" className="nav-link">
-                                    Мерки
+                                    Charts
                                 </Link>
                             </li>
                         </ul>
@@ -67,12 +65,12 @@ export const Header = (props: any) => {
                             <ul className="nav navbar-nav navbar-right">
                                 <li className="nav-item">
                                     <Link to="/Login" className="nav-link">
-                                        вход
+                                        Login In
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link to="/register" className="nav-link">
-                                        регистрация
+                                        Register
                                     </Link>
                                 </li>
                             </ul>
@@ -99,31 +97,22 @@ export const Header = (props: any) => {
                                                     to={"/user/profile"}
                                                     className="dropdown-item profile-link"
                                                 >
-                                                    Профил
+                                                    Profile
                                                 </Link>
                                                 <ChildSubmenu />
                                                 <hr />
-                                                <Link
-                                                    to={
-                                                        "/campaign/by-organization/" +
-                                                        defaultUserOrganizationId
-                                                    }
-                                                    className="dropdown-item profile-link"
-                                                >
-                                                    Настройки
-                                                </Link>
+
                                                 <Link
                                                     to={"/admin/create-source"}
                                                     className="dropdown-item profile-link"
                                                 >
-                                                    Добави храна
+                                                    Add food
                                                 </Link>
                                                 <Link
                                                     to={"/create-baby-profile"}
                                                     className="dropdown-item profile-link"
                                                 >
-                                                    Добави дете
-                                                </Link>
+                                                    Add child                                                </Link>
                                                 <hr />
                                                 <button
                                                     onClick={logout}
